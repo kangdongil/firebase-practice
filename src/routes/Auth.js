@@ -1,3 +1,65 @@
-import React from "react";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { authService } from "firebaseConfig";
+import React, { useState } from "react";
 
-export default () => <span>Auth</span>;
+export default () => {
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ newAccount, setNewAccount ] = useState(true);
+    const onChange = (event) => {
+        const { name, value } = event.target;
+        if (name === "email") {
+            setEmail(value);
+        } else if (name === "password") {
+            setPassword(value);
+        }
+    }
+    const onSubmit = async(event) => {
+        event.preventDefault();
+        let data;
+        try {
+            if (newAccount) {
+                data = await createUserWithEmailAndPassword(
+                    authService,
+                    email,
+                    password,
+                );
+            } else {
+                data = await signInWithEmailAndPassword(
+                    authService,
+                    email,
+                    password,
+                );
+            }
+            console.log(data);
+        } catch(error) {
+            console.log(error.message);
+        }
+    }
+    return (
+    <div>
+        <form onSubmit={onSubmit}>
+            <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                required
+                onChange={onChange}
+            />
+            <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                required
+                onChange={onChange}
+            />
+            <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+        </form>
+        <div>
+            <button>Continue with Google</button>
+            <button>Continue with Github</button>
+        </div>
+    </div>
+)};

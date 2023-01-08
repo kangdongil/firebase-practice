@@ -193,3 +193,60 @@ npm i react-router-dom
     const [ isLoggedIn ,setIsLoggedIn ] = useState(authService.currentUser);
   }
   ```
+
+### `React`로 `Login Form` 만들기
+1. JSX 구조 짜기
+```javascript
+<div>
+  <form onSubmit={onSubmit}>
+    <input type="email" required
+      placeholder="Email" value={email}
+      onChange={onChange}
+    />
+    <input type="password" required
+      placeholder="Password" value={password}
+      onChange={onChange}
+    />
+    <input type="submit" value="Log In" />
+  </form>
+</div>
+```
+2. `Email`과 `Password`의 `state` 정하기
+```javascript
+const [ email, setEmail ] = useState("");
+const [ password, setPassword ] = useState("");
+```
+3. `Email`과 `Password`의 `<input>` 입력가능하게 하기
+```javascript
+const onChange = (event) => {
+  const { name, value } = event.target;
+  if (name === "email") {
+    setEmail(value);
+  } else if (name === "password") {
+    setPassword(value);
+  }
+}
+```
+4. `Email`로 `Login` 또는 `SignIn`하기
+  - `firebase/auth`에서 다음 함수를 import한다.
+    - `createUserWithEmailAndPassword`
+    - `signInWithEmailAndPassword`
+  - `async...await`문으로 sdk로부터 data 받을 때까지 대기한다.
+  - `try..except`문으로 error를 표시한다
+  ```javascript
+  const onSubmit = async(event) => {
+    event.preventDefault();
+    let data;
+    ...
+    data = await createUserWithEmailAndPassword(
+      authService, email, password
+    )
+  }
+  ```
+  ```javascript
+  try {
+    ...
+  } catch(error) {
+    console.log(error.message);
+  }
+  ```
