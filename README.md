@@ -22,7 +22,19 @@ mkdir src/components src/routes
 ```shell
 mv src/App.js src/components
 ```
-
+5. Enable `Absolute Imports`
+  - [`CRA_Docs`](https://create-react-app.dev/docs/importing-a-component/#absolute-imports) How to enable Absolute Imports
+  ```shell
+  touch jsconfig.json
+  ```
+  ```yaml
+    {
+      "compilerOptions": {
+        "baseUrl": "src"
+      },
+      "include": ["src"]
+    }
+  ```
 ### Git
 - `rm -rf .git`
 - `git init`
@@ -154,5 +166,30 @@ npm i react-router-dom
   // router.js
   const AppRouter = ({ isLoggedIn }) => {
     ...
+  }
+  ```
+
+## `Firebase`로 `Authentication` 구현하기
+### Project에 `firebase/auth` 적용하기
+1. Firebase Docs 참고하기
+  - [`Firebase Docs`](https://firebase.google.com/docs/web/learn-more?authuser=0#ways-to-add-web-sdks) How to apply Auth on FirebaseConfig
+  - [`Firebase Docs`](https://firebase.google.com/docs/reference/js/auth.md?authuser=0#auth_package) Browser Auth Packages
+2. `firebaseConfig.js`에 `auth` 기능 추가하기
+  ```javascript
+  // firebaseConfig.js
+  import { getAuth } from "firebase/auth";
+
+  ...
+  const firebaseApp = initializeApp(firebaseConfig);
+
+  export const authService = getAuth(firebaseApp);
+  ```
+3. `App.js`로 `auth`가 잘 import되었는지 확인하기
+  ```javascript
+  // App.js
+  import { authService } from "firebaseConfig";
+
+  function App() {
+    const [ isLoggedIn ,setIsLoggedIn ] = useState(authService.currentUser);
   }
   ```
