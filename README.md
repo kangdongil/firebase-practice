@@ -36,7 +36,7 @@ mv src/App.js src/components
     - 구글계정 로그인 후, `Create a Project`하기
     - `Analytics` 설정 해제
 2. `Web App` 추가하기
-    - [`Google Docs`](https://firebase.google.com/docs/web/setup?authuser=0) 참고하기
+    - [`Google Docs`](https://firebase.google.com/docs/web/setup?authuser.0) 참고하기
 3. `Firebase`를 `React` 프로젝트에 적용하기
     - `firebase` package 설치하기
       ```shell
@@ -91,3 +91,68 @@ mv src/App.js src/components
     ```
     - `.gitignore`에 `.env`를 추가하기
     - `process.env.__`로 `.env` 변수 받아오기
+
+### React-Router-Dom
+1. `react-router-dom` 설치하기
+```shell
+npm i react-router-dom
+```
+2. `router.js`와 `routes` 파일 생성하기
+  ```shell
+  touch src/router.js
+  touch src/routes/{Auth.js, EditProfile.js, Home.js, Profile.js}
+  ```
+  - 한 줄 `<span>`을 render하는 `route`들을 만들기
+  ```javascript
+  import React from "react";
+
+  export default () => <span>Message</span>;
+  ```
+3. `router.js`의 Router 구조 만들기
+  - `BrowserRouter`, `Routes`, `Route`를 import하기
+  ```javascript
+  import  { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+  ```
+  - `AppRouter` 선언하기
+  ```javascript
+  ...
+  const AppRouter = () => {
+    return (
+      <Router>
+        <Routes>
+          <>
+            <Route path="..." element={<Route />}> />
+            ...
+          </>
+        </Routes>
+      </Router>
+    );
+  }
+  ```
+  4. `AppRouter`를 `App.js`에 import하기
+  ```javascript
+  // router.js
+  export default AppRouter;
+
+  // App.js
+  function App() {
+    <AppRouter />
+  }
+  ```
+  5. `state`는 `App.js`에서 선언하고 `prop`으로 넘겨받는다
+  ```javascript
+  // App.js
+  function App() {
+    const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+    return(
+      <AppRouter
+        isLoggedIn={isLoggedIn}
+      />
+    )
+  }
+
+  // router.js
+  const AppRouter = ({ isLoggedIn }) => {
+    ...
+  }
+  ```
