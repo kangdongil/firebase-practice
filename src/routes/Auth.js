@@ -6,6 +6,8 @@ export default () => {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ newAccount, setNewAccount ] = useState(true);
+    const [ error, setError ] = useState("");
+
     const onChange = (event) => {
         const { name, value } = event.target;
         if (name === "email") {
@@ -33,9 +35,11 @@ export default () => {
             }
             console.log(data);
         } catch(error) {
-            console.log(error.message);
+            console.log(`Firebase: ${error.message}`);
+            setError(error.message);
         }
     }
+    const toggleAccount = () => setNewAccount((prev) => !prev);
     return (
     <div>
         <form onSubmit={onSubmit}>
@@ -55,8 +59,10 @@ export default () => {
                 required
                 onChange={onChange}
             />
-            <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+            <input type="submit" value={newAccount ? "Create Account" : "Sign In"} />
+            {error}
         </form>
+        <span onClick={toggleAccount}>{newAccount ? "Sign In" : "Create Account"}</span>
         <div>
             <button>Continue with Google</button>
             <button>Continue with Github</button>

@@ -228,6 +228,7 @@ const onChange = (event) => {
 }
 ```
 4. `Email`로 `Login` 또는 `SignIn`하기
+  - [`Firebase Docs`](https://firebase.google.com/docs/auth/web/password-auth?authuser=0) Authenticate with Firebase using Password-Based Accounts
   - `firebase/auth`에서 다음 함수를 import한다.
     - `createUserWithEmailAndPassword`
     - `signInWithEmailAndPassword`
@@ -250,3 +251,22 @@ const onChange = (event) => {
     console.log(error.message);
   }
   ```
+
+### `Log In`과 `Sign Up` 구현하기
+1. `onAuthStateChanged`로 로그인 여부 확인하기
+  - Login 여부는 `[개발자도구]`-`[Application]`-`[IndexedDB]`에서 확인가능하다.
+2. `useEffect`를 사용해 `Loading` 구현하기
+```javascript
+useEffect(() => {
+  authService.onAuthStateChange((user) => {
+    ...
+    // User 여부에 따라 Login Form 숨기기
+    // Loading 마무리여부 state로 표시하기
+  })
+}, []);
+  { init ?
+    //로그인된 이후 내용
+    :
+    //로딩중..
+  }
+```
