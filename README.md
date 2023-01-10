@@ -339,4 +339,30 @@ useEffect(() => {
       createdAt: Date.now(),
     })
   }
+  ``
+3. `Document`를 코드로 `Read`하기
+  ```javascript
+  const getNweets = async() => {
+        const dbNweets = await getDocs(collection(dbService, "nweets"));
+        dbNweets.forEach((document) => {
+            const nweetObj = {
+                ...document.data(),
+                id: document.id,
+            };
+            setNweets((prev) => [nweetObj, ...prev]);
+        })
+    }
+    useEffect(() => {
+        getNweets()
+    }, [])
+  ```
+  ```javascript
+  <div>
+      {nweets.map((nweet) => (
+          <div key={nweet.id}>
+              <h4>{nweet.nweet}</h4>
+          </div>
+          ))
+      }
+  </div>
   ```
