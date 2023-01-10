@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { authService } from "firebaseConfig";
 import React, { useState } from "react";
 
@@ -40,6 +40,19 @@ export default () => {
         }
     }
     const toggleAccount = () => setNewAccount((prev) => !prev);
+    const onSocialClick = async(event) => {
+        const { name } = event.target;
+        let provider;
+        switch (name) {
+            case "google":
+                provider = new GoogleAuthProvider;
+                break;
+            case "github":
+                provider = new GithubAuthProvider;
+                break;
+        }
+        await signInWithPopup(authService, provider);
+    }
     return (
     <div>
         <form onSubmit={onSubmit}>
@@ -64,8 +77,8 @@ export default () => {
         </form>
         <span onClick={toggleAccount}>{newAccount ? "Sign In" : "Create Account"}</span>
         <div>
-            <button>Continue with Google</button>
-            <button>Continue with Github</button>
+            <button name="google" onClick={onSocialClick}>Continue with Google</button>
+            <button name="github" onClick={onSocialClick}>Continue with Github</button>
         </div>
     </div>
 )};

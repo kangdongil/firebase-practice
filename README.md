@@ -270,3 +270,32 @@ useEffect(() => {
     //로딩중..
   }
 ```
+
+### `Social Login` 구현하기
+- [`Firebase Docs`](https://firebase.google.com/docs/auth/web/google-signin?authuser=0): Authenticate Social Login
+
+1. Firebase 사이트에서 `Login Provider` 추가하기
+  - Google
+  - GitHub(별도의 `Github App` 설정 요함)
+2. Social Login `Button` 만들기
+3. 클릭할 때 `onClick` 이벤트 작성하기
+  - `GoogleAuthProvider`
+  - `GithubAuthProvider`
+  - `signInWithPopup`
+  ```javascript
+  import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+
+  const onSocialClick = async(event) => {
+    const { name } = event.target;
+    let provider;
+    switch (name) {
+      case "google":
+        provider = new GoogleAuthProvider;
+        break;
+      case "github":
+        provider = new GithubAuthProvider;
+        break;
+    }
+    await signInWithPopup(authService, provider);
+  }
+  ```
