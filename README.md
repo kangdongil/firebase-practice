@@ -314,3 +314,29 @@ useEffect(() => {
     // navigate("/", { replace: true });
   }
   ```
+
+## `FireStore`로 `Data`를 `Create`하기
+### `FireStore DB` 구조 살펴보기
+- [`Firebase Doc`](https://firebase.google.com/docs/firestore/data-model): Firebase Data Model Explanation
+- [`Firebase Doc`](https://firebase.google.com/docs/firestore/quickstart#create): How to add Data on Firestore
+- `Firebase`는 `Collection` - `Document` - `Field` 순으로 구조를 가진다.
+- `Collection`은 일종의 `Schema`, `Document`는 `Row`, `Field`는 `Column`으로 생각하면 된다
+### `FireStore`를 `DB`로 사용하기
+1. `getFireStore`를 `firebaseConfig`에 등록하기
+  ```javascript
+  import { getFirestore } from "firebase/firestore";
+
+  export const dbService = getFirestore();
+  ```
+2. `Document`를 코드로 `Create`하기
+  ```javascript
+  import { dbService } from "firebaseConfig";
+  import { collection, addDoc } from "firebase/firestore";
+
+  try {
+    const docRef = await addDoc(collection(dbService, "nweets"), {
+      msg: "blablabla",
+      createdAt: Date.now(),
+    })
+  }
+  ```
