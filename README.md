@@ -299,3 +299,18 @@ useEffect(() => {
     await signInWithPopup(authService, provider);
   }
   ```
+
+### LogOut 구현하기
+1. Log Out `Button` 만들기
+  - `<button>`에 `onClick` Prop 주기
+2. `authService.signOut()`으로 로그아웃하기
+3. `useNavigate`로 뒤로가기
+  ```javascript
+  import { useNavigate } from "react-router-dom";
+
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(-1);
+    // navigate("/", { replace: true });
+  }
+  ```

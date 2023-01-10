@@ -1,3 +1,17 @@
+import { authService } from "firebaseConfig";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default () => <span>Profile</span>;
+export default () => {
+    const navigate = useNavigate();
+    const onLogOutClick = () => {
+        authService.signOut();
+        navigate(-1);
+        // navigate("/", { replace: true });
+    }
+    return (
+        <>
+            <button onClick={onLogOutClick}>Log Out</button>
+        </>
+    )
+};
