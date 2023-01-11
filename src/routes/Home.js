@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { dbService } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
 
@@ -6,7 +6,11 @@ export default ({ userObj }) => {
     const [ nweet, setNweet ] = useState("");
     const [ nweets, setNweets ] = useState([]);
     useEffect(() => {
-        onSnapshot(collection(dbService, "nweets"), (snapshot) => {
+        const q = query(
+            collection(dbService, "nweets"),
+            orderBy("createdAt", "desc")
+        );
+        onSnapshot(q, (snapshot) => {
             const nweetArr = snapshot.docs.map((doc) => (
                 {
                     id: doc.id,
@@ -14,8 +18,8 @@ export default ({ userObj }) => {
                 }
             ))
             setNweets(nweetArr);
-        })
-    }, [])
+        });
+    }, []);
     const onSubmit = async(event) => {
         event.preventDefault();
         await addDoc(collection(dbService, "nweets"), {
