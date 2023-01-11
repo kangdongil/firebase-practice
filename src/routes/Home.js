@@ -2,7 +2,8 @@ import { addDoc, collection, getDocs } from "firebase/firestore";
 import { dbService } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
 
-export default () => {
+export default ({ userObj }) => {
+    console.log(userObj);
     const [ nweet, setNweet ] = useState("");
     const [ nweets, setNweets ] = useState([]);
     const getNweets = async() => {
@@ -16,13 +17,15 @@ export default () => {
         })
     }
     useEffect(() => {
-        getNweets()
+        getNweets();
+        dbService.collection("nweets")
     }, [])
     const onSubmit = async(event) => {
         event.preventDefault();
         await addDoc(collection(dbService, "nweets"), {
-            nweet,
+            text: nweet,
             createdAt: Date.now(),
+            creatorId: userObj.uid,
         });
         setNweet("");
     };
@@ -30,7 +33,6 @@ export default () => {
         const { value } = event.target;
         setNweet(value);
     }
-    console.log(nweets);
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -49,7 +51,7 @@ export default () => {
             <div>
                 {nweets.map((nweet) => (
                     <div key={nweet.id}>
-                        <h4>{nweet.nweet}</h4>
+                        <h4>{nweet.text}</h4>
                     </div>
                     ))
                 }

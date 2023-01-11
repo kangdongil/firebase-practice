@@ -5,7 +5,7 @@ import Profile from "routes/Profile";
 import Auth from "./routes/Auth";
 import Home from "./routes/Home";
 
-const AppRouter = ({ isLoggedIn }) => {
+const AppRouter = ({ isLoggedIn, userObj }) => {
     return (
         <Router>
             { isLoggedIn && <Navigation />}
@@ -13,7 +13,7 @@ const AppRouter = ({ isLoggedIn }) => {
                 <>
                     { isLoggedIn ? (
                         <>
-                            <Route path="/" element={<Home />} />
+                            <Route path="/" element={<Home userObj={userObj} />} />
                             <Route path="/profile" element={<Profile />} />
                         </>
                     ) : (
