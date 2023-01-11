@@ -1,24 +1,20 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot } from "firebase/firestore";
 import { dbService } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
 
 export default ({ userObj }) => {
-    console.log(userObj);
     const [ nweet, setNweet ] = useState("");
     const [ nweets, setNweets ] = useState([]);
-    const getNweets = async() => {
-        const dbNweets = await getDocs(collection(dbService, "nweets"));
-        dbNweets.forEach((document) => {
-            const nweetObj = {
-                ...document.data(),
-                id: document.id,
-            };
-            setNweets((prev) => [nweetObj, ...prev]);
-        })
-    }
     useEffect(() => {
-        getNweets();
-        dbService.collection("nweets")
+        onSnapshot(collection(dbService, "nweets"), (snapshot) => {
+            const nweetArr = snapshot.docs.map((doc) => (
+                {
+                    id: doc.id,
+                    ...doc.data(),
+                }
+            ))
+            setNweets(nweetArr);
+        })
     }, [])
     const onSubmit = async(event) => {
         event.preventDefault();
