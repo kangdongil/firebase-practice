@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/firebase-practice_230108/static/css/main.7743eae2.css",
-    "main.js": "/firebase-practice_230108/static/js/main.9578ac82.js",
+    "main.js": "/firebase-practice_230108/static/js/main.e3e9b608.js",
     "index.html": "/firebase-practice_230108/index.html",
     "main.7743eae2.css.map": "/firebase-practice_230108/static/css/main.7743eae2.css.map",
-    "main.9578ac82.js.map": "/firebase-practice_230108/static/js/main.9578ac82.js.map"
+    "main.e3e9b608.js.map": "/firebase-practice_230108/static/js/main.e3e9b608.js.map"
   },
   "entrypoints": [
     "static/css/main.7743eae2.css",
-    "static/js/main.9578ac82.js"
+    "static/js/main.e3e9b608.js"
   ]
 }
