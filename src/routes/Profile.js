@@ -1,10 +1,12 @@
+import { updateProfile } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { authService, dbService } from "firebaseConfig";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default ({ userObj }) => {
+export default ({ userObj, refreshUser }) => {
   const navigate = useNavigate();
+  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const onLogOutClick = () => {
     authService.signOut();
     navigate("/", { replace: true });
@@ -27,8 +29,23 @@ export default ({ userObj }) => {
   useEffect(() => {
     getMyNweets();
   }, []);
+  const onChange = (event) => {
+    const { value } = event.target;
+    setNewDisplayName(value);
+  };
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (userObj.displayName !== newDisplayName) {
+      await updateProfile(userObj, { displayName: newDisplayName });
+    }
+    refreshUser();
+  };
   return (
     <>
+      <form onSubmit={onSubmit}>
+        <input type="text" placeholder="Display name" onChange={onChange} />
+        <input type="submit" value="Update Profile" />
+      </form>
       <button onClick={onLogOutClick}>Log Out</button>
     </>
   );
