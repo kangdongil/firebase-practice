@@ -44,7 +44,7 @@ export default ({ refreshUser }) => {
   const toggleAccount = () => setNewAccount((prev) => !prev);
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="container">
         <input
           name="email"
           type="email"
@@ -52,6 +52,7 @@ export default ({ refreshUser }) => {
           value={email}
           required
           onChange={onChange}
+          className="authInput"
         />
         <input
           name="password"
@@ -60,14 +61,16 @@ export default ({ refreshUser }) => {
           value={password}
           required
           onChange={onChange}
+          className="authInput"
         />
         <input
           type="submit"
           value={newAccount ? "Create Account" : "Sign In"}
+          className="authInput authSubmit"
         />
-        {error}
+        {error && <span className="authError">{error}</span>}
       </form>
-      <span onClick={toggleAccount}>
+      <span onClick={toggleAccount} className="authSwitch">
         {newAccount ? "Sign In" : "Create Account"}
       </span>
     </>
