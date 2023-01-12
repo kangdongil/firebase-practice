@@ -31,7 +31,7 @@ export default ({ userObj }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     let attachmentUrl = "";
-    if (attachment != "") {
+    if (attachment !== "") {
       const attachmentRef = ref(storageService, `${userObj.uid}/${v4()}`);
       const response = await uploadString(
         attachmentRef,
@@ -48,7 +48,7 @@ export default ({ userObj }) => {
     };
     await addDoc(collection(dbService, "nweets"), nweetObj);
     setNweet("");
-    setAttachment(null);
+    setAttachment("");
   };
   const onChange = (event) => {
     const { value } = event.target;
@@ -76,6 +76,7 @@ export default ({ userObj }) => {
           maxLength={120}
           value={nweet}
           onChange={onChange}
+          required
         />
         <input type="file" accept="image/*" onChange={onFileChange} />
         <input type="submit" value="Nweet" />
