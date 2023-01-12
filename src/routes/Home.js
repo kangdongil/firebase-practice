@@ -6,13 +6,15 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { dbService } from "firebaseConfig";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { v4 } from "uuid";
+import { dbService, storageService } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
 
 export default ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-  const [attachment, setAttachment] = useState(null);
+  const [attachment, setAttachment] = useState("");
   useEffect(() => {
     const q = query(
       collection(dbService, "nweets"),
@@ -28,12 +30,25 @@ export default ({ userObj }) => {
   }, []);
   const onSubmit = async (event) => {
     event.preventDefault();
-    await addDoc(collection(dbService, "nweets"), {
+    let attachmentUrl = "";
+    if (attachment != "") {
+      const attachmentRef = ref(storageService, `${userObj.uid}/${v4()}`);
+      const response = await uploadString(
+        attachmentRef,
+        attachment,
+        "data_url"
+      );
+      attachmentUrl = await getDownloadURL(response.ref);
+    }
+    const nweetObj = {
       text: nweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
-    });
+      attachmentUrl,
+    };
+    await addDoc(collection(dbService, "nweets"), nweetObj);
     setNweet("");
+    setAttachment(null);
   };
   const onChange = (event) => {
     const { value } = event.target;
